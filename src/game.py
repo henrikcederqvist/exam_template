@@ -2,7 +2,7 @@ from .grid import Grid
 from .player import Player
 from . import pickups
 
-
+#test
 
 player = Player(2, 1)
 score = 0
