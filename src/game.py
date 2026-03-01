@@ -21,8 +21,31 @@ def print_status(game_grid):
     print(f"You have {score} points.")
     print(game_grid)
 
+def move_player(dx, dy):
+    global score
+
+    if player.can_move(dx, dy, g):
+        target_x = player.pos_x + dx
+        target_y = player.pos_y + dy
+
+        maybe_item = g.get(target_x, target_y)
+        player.move(dx, dy)
+
+        if isinstance(maybe_item, pickups.Item):
+            score += maybe_item.value
+            print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
+            g.clear(player.pos_x, player.pos_y)
+
+
+moves = {
+    "w": (0, -1), # upp
+    "s": (0, 1),  # ner
+    "a": (-1, 0), # vänster
+    "d": (1, 0),  # höger
+}
 
 command = "a"
+
 # Loopa tills användaren trycker Q eller X.
 while not command.casefold() in ["q", "x"]:
     print_status(g)
@@ -30,17 +53,9 @@ while not command.casefold() in ["q", "x"]:
     command = input("Use WASD to move, Q/X to quit. ")
     command = command.casefold()[:1]
 
-    if command == "d" and player.can_move(1, 0, g):  # move right
-        # TODO: skapa funktioner, så vi inte behöver upprepa så mycket kod för riktningarna "W,A,S"
-        maybe_item = g.get(player.pos_x + 1, player.pos_y)
-        player.move(1, 0)
-
-        if isinstance(maybe_item, pickups.Item):
-            # we found something
-            score += maybe_item.value
-            print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
-            #g.set(player.pos_x, player.pos_y, g.empty)
-            g.clear(player.pos_x, player.pos_y)
+    if command in moves:
+        dx, dy = moves[command]
+        move_player(dx, dy)
 
 
 # Hit kommer vi när while-loopen slutar
