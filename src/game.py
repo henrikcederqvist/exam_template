@@ -11,6 +11,7 @@ inventory = []
 g = Grid()
 g.set_player(player)
 g.make_walls()
+g.make_inner_walls()
 pickups.randomize(g)
 
 
@@ -31,9 +32,12 @@ def move_player(dx, dy):
         maybe_item = g.get(target_x, target_y)
         player.move(dx, dy)
 
+        score -= 1
+
         if isinstance(maybe_item, pickups.Item):
             score += maybe_item.value
             print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
+            inventory.append(maybe_item)
             g.clear(player.pos_x, player.pos_y)
 
 
@@ -46,6 +50,15 @@ moves = {
 
 command = "a"
 
+def print_inventory():
+    print("Inventory:")
+    if len(inventory) == 0:
+        print("  (empty)")
+    else:
+        for item in inventory:
+            print(" -", item.name)
+
+
 # Loopa tills användaren trycker Q eller X.
 while not command.casefold() in ["q", "x"]:
     print_status(g)
@@ -57,6 +70,8 @@ while not command.casefold() in ["q", "x"]:
         dx, dy = moves[command]
         move_player(dx, dy)
 
+    elif command == "i":
+        print_inventory()
 
 # Hit kommer vi när while-loopen slutar
 print("Thank you for playing!")

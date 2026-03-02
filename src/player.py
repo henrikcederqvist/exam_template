@@ -13,8 +13,15 @@ class Player:
         self.pos_x += dx
         self.pos_y += dy
 
-    def can_move(self, x, y, grid):
-        return True
-        #TODO: returnera True om det inte står något i vägen
+    def can_move(self, dx, dy, grid):
+        new_x = self.pos_x + dx
+        new_y = self.pos_y + dy
 
+        tile = grid.get(new_x, new_y)
+
+        # Om rutan är en vägg → kan inte gå dit
+        if tile == grid.wall:
+            return False
+
+        return True
 

@@ -53,6 +53,20 @@ class Grid:
             self.set(j, 0, self.wall)
             self.set(j, self.height - 1, self.wall)
 
+    def make_inner_walls(self):
+
+        for x in range(2, 11):
+            self.set(x, 2, self.wall)
+
+        for x in range(2, 11):
+            if x != 6:  # öppning i mitten
+                self.set(x, 6, self.wall)
+
+        for y in range(2, 7):
+            self.set(2, y, self.wall)
+
+        for y in range(2, 7):
+            self.set(10, y, self.wall)
 
     # Används i filen pickups.py
     def get_random_x(self):
