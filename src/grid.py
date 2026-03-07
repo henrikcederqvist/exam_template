@@ -38,10 +38,16 @@ class Grid:
                 if x == self.player.pos_x and y == self.player.pos_y:
                     xs += "@"
                 else:
-                    xs += str(row[x])
+                    tile = row[x]
+
+                    # ⭐ NY KOD: använd tile.symbol om det finns
+                    if hasattr(tile, "symbol"):
+                        xs += tile.symbol
+                    else:
+                        xs += str(tile)
+
             xs += "\n"
         return xs
-
 
     def make_walls(self):
         """Skapa väggar runt hela spelplanen"""

@@ -23,3 +23,16 @@ def randomize(grid):
                 grid.set(x, y, item)
                 break  # avbryt while-loopen, fortsätt med nästa varv i for-loopen
 
+import random
+
+def random_item():
+    return random.choice(pickups)
+
+class Exit(Item):
+    def __init__(self):
+        super().__init__("Exit", value=0, symbol="E")
+
+class Trap:
+    symbol = "T"
+    name = "Trap"
+    value = -10
