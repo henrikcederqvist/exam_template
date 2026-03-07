@@ -53,6 +53,7 @@ grace_steps = 0
 turn_counter = 0
 
 
+
 # TODO: flytta denna till en annan fil
 def print_status(game_grid):
     """Visa spelvärlden och antal poäng."""
