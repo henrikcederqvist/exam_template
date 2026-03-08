@@ -1,0 +1,22 @@
+Git repo:
+https://github.com/henrikcederqvist/exam_template.git
+
+Version 1 - grundkrav
+Spelaren ska börja nära mitten av rummet.
+Förflyttningar i alla 4 riktningar. (Med tangenterna WASD.)
+Man ska inte kunna gå igenom väggar.
+Fruktsallad - alla frukter ska vara värda 20 poäng i stället för 10.
+Inventory - alla saker som man plockar upp ska sparas i en lista.
+Nytt kommando: "i", skriver ut innehållet i spelarens inventory.
+The floor is lava - för varje steg man går ska man tappa 1 poäng.
+Använd for-loopar för att skapa flera, sammanhängande väggar på kartan. Se till att det inte skapas några rum som man inte kan komma in i. Gör detta i filen grid.py.
+
+Version 2 - nice to have
+Fällor - introducera valfri fälla till spelplanen. Om man går på en ruta med en fälla ska man förlora 10 poäng. Fällan ska ligga kvar så att man kan falla i den flera gånger.
+Bördig jord - efter varje 25:e drag skapas en ny frukt/grönsak någonstans på kartan.
+Exit - slumpa ett "E" på kartan. När man har plockat upp alla ursprungliga saker, kan man gå till exit för att vinna spelet. Men innan man tagit upp alla har inte Exit någon effekt.
+
+Version 3 - extra utmaning
+Grace period - efter man har tagit plockat upp något, kan man gå 5 steg utan att det dras några poäng.
+Tryck "B" för att placera en bomb. Efter 3 drag smäller bomben och förstör allt på sin ruta och de åtta som gränsar till den. (fällor, väggar, m.m.) Om spelaren är kvar förlorar man poäng.
+
