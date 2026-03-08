@@ -1,5 +1,6 @@
 Git repo:
 https://github.com/henrikcederqvist/exam_template.git
+startas med PS C:\Users\Ceder\PycharmProjects\exam_hc> py -m src.game
 
 Version 1 - grundkrav
 Spelaren ska börja nära mitten av rummet.
