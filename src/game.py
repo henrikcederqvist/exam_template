@@ -1,8 +1,16 @@
-#test
+"""
+Ett rutnätsbaserat spel där spelaren samlar föremål markerade med (?).
+Föremålen ger poäng och sparas i en lista som spelaren kan visa.
+Spelaren måste undvika fällor, kan placera bomber och måste samla alla föremål
+för att aktivera utgången och vinna spelet.
+"""
+
+from .status import print_status
 from .grid import Grid
 from .player import Player
 from . import pickups
 
+# Räknar hur många items som finns på kartan (ej exit)
 def count_items_on_grid(grid):
     count = 0
     for y in range(grid.height):
@@ -12,15 +20,15 @@ def count_items_on_grid(grid):
                 count += 1
     return count
 
+# Globala spelvariabler
 picked_items = 0
-
 active_bomb = None   # (x, y)
 bomb_timer = 0
-
 player = Player(18, 6)
 score = 0
 inventory = []
 
+# Skapa spelvärlden
 g = Grid()
 g.set_player(player)
 g.make_walls()
@@ -40,8 +48,10 @@ def place_traps(n=3):
                 g.set(x, y, pickups.Trap())
                 break
 
+# Slumpa ut tre fällor på tomma rutor
 place_traps(3)
 
+# Slumpar ut en exit på en tom ruta
 def place_exit():
     import random
     while True:
@@ -53,24 +63,9 @@ def place_exit():
 
 place_exit()
 
+# Grace period: spelaren tar ingen skada i X steg
 grace_steps = 0
 turn_counter = 0
-
-
-
-# TODO: flytta denna till en annan fil
-def print_status(game_grid):
-    """Visa spelvärlden och antal poäng."""
-    print("--------------------------------------")
-    print(f"You have {score} points.")
-    #print(f"DEBUG: picked_items = {picked_items} / {total_items}")
-
-    if grace_steps > 0:
-        print(f"Grace period: {grace_steps} free steps left.")
-    else:
-        print("Grace period: inactive")
-
-    print(game_grid)
 
 import random
 
@@ -101,6 +96,7 @@ def spawn_new_pickup():
 
     print("A new plant has grown somewhere on the map!")
 
+# Lägger ut en bomb på spelarens position om ingen redan finns
 def place_bomb():
     global active_bomb, bomb_timer
 
@@ -117,7 +113,7 @@ def place_bomb():
 
     print("Bomb placed! It will explode in 3 turns.")
 
-
+# Bomben exploderar i ett 3x3 område runt spelaren och kan skada spelaren.
 def explode_bomb():
     global active_bomb, bomb_timer, score
 
@@ -143,7 +139,7 @@ def explode_bomb():
     active_bomb = None
     bomb_timer = 0
 
-
+# Flyttar spelaren och hanterar allt som kan hända under ett steg
 def move_player(dx, dy):
     global score, grace_steps, turn_counter, picked_items
 
@@ -155,6 +151,7 @@ def move_player(dx, dy):
         #print("DEBUG: Stepped on:", maybe_item, type(maybe_item))
         player.move(dx, dy)
 
+        # Exit placeras slumpmässigt men är inaktiv tills alla items är plockade
         if getattr(maybe_item, "symbol", None) == "E":
             if picked_items == total_items:
                 print("You reached the exit and won the game!")
@@ -171,6 +168,7 @@ def move_player(dx, dy):
             if bomb_timer == 0:
                 explode_bomb()
 
+        # Var 25:e turn växer en ny planta
         if turn_counter % 25 == 0:
             spawn_new_pickup()
 
@@ -207,6 +205,7 @@ moves = {
 
 command = "a"
 
+# Visar en lista över alla insamlade växter/frukter
 def print_inventory():
     print("Inventory:")
     if len(inventory) == 0:
@@ -216,11 +215,11 @@ def print_inventory():
             print(" -", item.name)
 
 
-# Loopa tills användaren trycker Q eller X.
+# Huvudloop: kör spelet tills spelaren trycker Q eller X
 while not command.casefold() in ["q", "x"]:
-    print_status(g)
+    print_status(g, score, grace_steps)
 
-    command = input("Use WASD to move, Q/X to quit. ")
+    command = input("Use WASD to move, I for inventory, B to place bomb, Q/X to quit: ")
     command = command.casefold()[:1]
 
     if command in moves:

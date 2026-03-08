@@ -1,32 +1,36 @@
 import random
 
 class Grid:
-    """Representerar spelplanen. Du kan ändra standardstorleken och tecknen för olika rutor. """
+    """
+    Representerar spelplanen som ett rutnät.
+    Hanterar väggar, tomma rutor, spelaren och placering av objekt.
+    """
     width = 36
     height = 12
     empty = "."  # Tecken för en tom ruta
     wall = "■"   # Tecken för en ogenomtränglig vägg
 
     def __init__(self):
-        """Skapa ett objekt av klassen Grid"""
+        """Skapar ett nytt rutnät fyllt med tomma rutor."""
         # Spelplanen lagras i en lista av listor. Vi använder "list comprehension" för att sätta tecknet för "empty" på varje plats på spelplanen.
         self.data = [[self.empty for y in range(self.width)] for z in range(
             self.height)]
 
 
     def get(self, x, y):
-        """Hämta det som finns på en viss position"""
+        """Returnerar innehållet på positionen (x, y)."""
         return self.data[y][x]
 
     def set(self, x, y, value):
-        """Ändra vad som finns på en viss position"""
+        """Sätter innehållet på positionen (x, y) till value."""
         self.data[y][x] = value
 
     def set_player(self, player):
+        """Registrerar spelaren så att den kan ritas ut på kartan."""
         self.player = player
 
     def clear(self, x, y):
-        """Ta bort item från position"""
+        """Tar bort ett föremål från positionen (x, y)."""
         self.set(x, y, self.empty)
 
     def __str__(self):
@@ -50,7 +54,7 @@ class Grid:
         return xs
 
     def make_walls(self):
-        """Skapa väggar runt hela spelplanen"""
+        """Skapar väggar runt hela spelplanens ytterkanter."""
         for i in range(self.height):
             self.set(0, i, self.wall)
             self.set(self.width - 1, i, self.wall)
@@ -60,6 +64,7 @@ class Grid:
             self.set(j, self.height - 1, self.wall)
 
     def make_inner_walls(self):
+        """Skapar några fördefinierade inre väggar."""
 
         for x in range(2, 11):
             self.set(x, 2, self.wall)

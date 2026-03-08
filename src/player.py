@@ -1,4 +1,8 @@
 class Player:
+    """
+    Representerar spelaren på rutnätet.
+    Håller reda på spelarens position och hanterar förflyttning.
+    """
     marker = "@"
 
     def __init__(self, x, y):
@@ -14,6 +18,10 @@ class Player:
         self.pos_y += dy
 
     def can_move(self, dx, dy, grid):
+        """
+        Kontrollerar om spelaren kan gå till rutan i riktningen (dx, dy).
+        Returnerar False om rutan är en vägg.
+        """
         new_x = self.pos_x + dx
         new_y = self.pos_y + dy
 
