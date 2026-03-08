@@ -130,6 +130,11 @@ def explode_bomb():
 
             if 0 <= x < g.width and 0 <= y < g.height:
 
+                # Spräng inte bort utgången
+                tile = g.get(x, y)
+                if isinstance(tile, pickups.Exit):
+                    continue
+
                 if x == player.pos_x and y == player.pos_y:
                     score -= 20
                     print("You were caught in the explosion! -20 points.")
