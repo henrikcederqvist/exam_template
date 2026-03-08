@@ -13,6 +13,9 @@ def count_items_on_grid(grid):
 
 picked_items = 0
 
+active_bomb = None   # (x, y)
+bomb_timer = 0
+
 player = Player(18, 6)
 score = 0
 inventory = []
@@ -97,6 +100,49 @@ def spawn_new_pickup():
 
     print("A new plant has grown somewhere on the map!")
 
+def place_bomb():
+    global active_bomb, bomb_timer
+
+    if active_bomb is not None:
+        print("You already placed a bomb!")
+        return
+
+    x = player.pos_x
+    y = player.pos_y
+
+    g.set(x, y, pickups.Bomb())
+    active_bomb = (x, y)
+    bomb_timer = 3
+
+    print("Bomb placed! It will explode in 3 turns.")
+
+
+def explode_bomb():
+    global active_bomb, bomb_timer, score
+
+    if active_bomb is None:
+        return
+
+    bx, by = active_bomb
+    print("BOOM! The bomb explodes!")
+
+    for dy in [-1, 0, 1]:
+        for dx in [-1, 0, 1]:
+            x = bx + dx
+            y = by + dy
+
+            if 0 <= x < g.width and 0 <= y < g.height:
+
+                if x == player.pos_x and y == player.pos_y:
+                    score -= 20
+                    print("You were caught in the explosion! -20 points.")
+
+                g.set(x, y, g.empty)
+
+    active_bomb = None
+    bomb_timer = 0
+
+
 def move_player(dx, dy):
     global score, grace_steps, turn_counter, picked_items
 
@@ -117,6 +163,13 @@ def move_player(dx, dy):
                 return
 
         turn_counter += 1
+
+        global bomb_timer
+        if bomb_timer > 0:
+            bomb_timer -= 1
+            if bomb_timer == 0:
+                explode_bomb()
+
         if turn_counter % 25 == 0:
             spawn_new_pickup()
 
@@ -175,6 +228,9 @@ while not command.casefold() in ["q", "x"]:
 
     elif command == "i":
         print_inventory()
+
+    elif command == "b":
+        place_bomb()
 
 # Hit kommer vi när while-loopen slutar
 print("Thank you for playing!")

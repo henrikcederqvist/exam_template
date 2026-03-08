@@ -36,3 +36,7 @@ class Trap:
     symbol = "T"
     name = "Trap"
     value = -10
+
+class Bomb:
+    symbol = "B"
+    name = "Bomb"
